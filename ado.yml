@@ -1,0 +1,68 @@
+trigger:
+- main
+
+pool:
+  name: Test
+
+stages:
+
+- stage: Build_Docling_Cache
+  displayName: Build Docling Model Cache
+
+  jobs:
+  - job: DownloadModels
+    displayName: Download HuggingFace Models
+
+    steps:
+
+    - script: |
+        echo "Installing uv"
+
+        curl -LsSf https://astral.sh/uv/install.sh | sh
+
+        export PATH="$HOME/.local/bin:$PATH"
+
+        uv --version
+
+        echo "Creating cache folder"
+
+        mkdir -p docling-hf-cache
+
+
+        echo "Downloading Docling models"
+
+        HF_HOME=$(pwd)/docling-hf-cache \
+        uv run --with huggingface_hub hf download \
+        docling-project/docling-layout-heron
+
+
+        HF_HOME=$(pwd)/docling-hf-cache \
+        uv run --with huggingface_hub hf download \
+        docling-project/docling-models
+
+
+        echo "Packaging cache"
+
+        tar -czf docling-model-cache.tar.gz docling-hf-cache
+
+
+        ls -lh docling-model-cache.tar.gz
+
+      displayName: Download and package Docling cache
+
+
+
+- stage: Publish
+  displayName: Publish Artifact
+
+  dependsOn: Build_Docling_Cache
+
+  jobs:
+
+  - job: PublishArtifact
+    displayName: Publish Docling Cache
+
+    steps:
+
+    - publish: $(System.DefaultWorkingDirectory)/docling-model-cache.tar.gz
+      artifact: docling-model-cache
