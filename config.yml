@@ -1,0 +1,54 @@
+# PDF to HTML Converter Configuration
+# Modify these settings to customize output without touching the main script
+
+# Input/Output paths
+input_pdf: "sample.pdf"
+output_dir: "output"
+
+# Styling configuration
+styling:
+  # Layout
+  max_width: "900px"
+  page_padding: "40px"
+  page_margin_bottom: "40px"
+  
+  # Colors
+  background_color: "#f5f5f5"
+  container_bg: "white"
+  text_color: "#333"
+  border_color: "#e0e0e0"
+  
+  # Typography
+  font_size: "1em"
+  line_height: 1.6
+  
+  # Tables
+  table_header_bg: "#f0f0f0"
+  table_hover_bg: "#f9f9f9"
+  table_border: "#ddd"
+  
+  # Spacing
+  paragraph_margin: "12px"
+  table_margin: "20px"
+
+# Content processing
+processing:
+  # Skip empty paragraphs
+  skip_empty_text: true
+  
+  # Preserve original formatting
+  preserve_formatting: false
+  
+  # Text alignment
+  text_align: "justify"  # Options: left, center, right, justify
+
+# Page settings
+pages:
+  show_page_numbers: true
+  page_number_format: "Page {}"
+  page_break_style: "border-bottom"  # Options: border-bottom, page-break
+
+# Logging
+logging:
+  level: "INFO"  # Options: DEBUG, INFO, WARNING, ERROR
+  show_timestamps: true
